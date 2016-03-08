@@ -1,4 +1,3 @@
-Admin
-=====
+# TehAdminDatabase
+Admin-Database for my college made up on Symfony2 framework in pile with Sonata bundles.
 
-A Symfony project created on March 6, 2016, 11:30 am.
