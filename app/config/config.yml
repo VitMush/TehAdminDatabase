@@ -65,10 +65,62 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-
+    
 sonata_block:
     default_contexts: [cms]
     blocks:
-        # enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts: [admin]
+        sonata.admin_doctrine_orm.block.audit:
+            contexts:   [admin]
+        sonata.block.service.text:
+        sonata.block.service.rss:
+            
+sonata_admin:
+    title: AdminDB
+    title_logo: bundles/app/images/logo2.png
+    security:
+        #handler: sonata.admin.security.handler.role
+    dashboard:
+        blocks:
+            -
+                class: col-lg-3
+                position: right
+                type: sonata.block.service.text
+                settings:
+                    content: >
+                        <h2>Welcome to my AdminDB Sonata- project</h2>
+                        <h3>Get lucky here, and don't break anything =)</h3>
+            -
+                class: col-md-5
+                position: left
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: [admin.group.main]
+                
+            -
+                class: col-md-5
+                position: left
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: [admin.group.db]
+        groups:
+            admin.group.main:
+                label:  Main
+                label_catalogue: AppBundle
+                items:
+                    - app.admin.blogpost
+                    - app.admin.category
+            admin.group.db:
+                label: Database
+                label_catalogue: DBBundle
+                items:
+                    - db.admin.group
+                    - db.admin.student
+
+                    
+            #sonata.admin.groups.demo:
+                #label: Demo
+                #label_catalogue: DemoBundle
+                #items:
+                    #- sonata.demo.admin.car
