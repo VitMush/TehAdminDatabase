@@ -1,0 +1,16 @@
+services:
+    db.admin.group:
+        class: DBBundle\Admin\GroupAdmin
+        tags:
+            - {name: sonata.admin, manager_type: orm, label: "Group" }
+        arguments: [~, DBBundle\Entity\Group, ~]
+        calls:
+            - [ setTranslationDomain, [DBBundle]]
+    
+    db.admin.student:
+        class: DBBundle\Admin\StudentAdmin
+        tags:
+            - {name: sonata.admin, manager_type: orm, label: "Student" }
+        arguments: [~, DBBundle\Entity\Student, ~]
+        calls:
+            - [ setTranslationDomain, [DBBundle]]

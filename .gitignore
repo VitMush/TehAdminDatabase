@@ -21,10 +21,8 @@
 !bin/console
 !bin/symfony_requirements
 /vendor/
-<<<<<<< HEAD
 /composer.lock
-=======
->>>>>>> admin/master
+
 
 # Assets and user uploads
 /web/bundles/
@@ -42,3 +40,6 @@
 
 # Composer PHAR
 /composer.phar
+
+/.idea/
+/nbproject/

@@ -1,0 +1,24 @@
+services:
+    
+    app.admin.blogpost:
+        class: AppBundle\Admin\BlogPostAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Blog Post" }
+        arguments:  [~, AppBundle\Entity\BlogPost, ~]
+        calls:
+            - [ setTranslationDomain, [AppBundle]]
+            - [addChild, [@app.admin.news, service]]
+
+    app.admin.category:
+        class: AppBundle\Admin\CategoryAdmin
+        arguments: [~, AppBundle\Entity\Category, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Category, group: "Content"}
+        calls: [[ setTranslationDomain, [AppBundle]]]
+        
+    app.admin.news:
+        class: AppBundle\Admin\NewsAdmin
+        arguments: [~, AppBundle\Entity\News, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: News, group: "Content"}
+        
