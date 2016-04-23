@@ -56,7 +56,6 @@ class Category
      * 
      * @return integer
      */
-    
     public function getNumber()
     {
         return intval($this->number);

@@ -2,6 +2,7 @@
 
 namespace DBBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,31 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Group
 {
+    /**
+     * @ORM\ManyToMany(targetEntity="Student", inversedBy="groups")
+     */
+    private $students;
+
+    /**
+     * Set students
+     *
+     * @param ArrayCollection $students
+     */
+    public function setStudents(ArrayCollection $students)
+    {
+        $this->students = $students;
+    }
+
+    /**
+     * Get students
+     *
+     * @return ArrayCollection
+     */
+    public function getStudents()
+    {
+        return $this->students;
+    }
+
     /**
      * @var int
      *
@@ -90,5 +116,9 @@ class Group
     public function getSpeciality()
     {
         return $this->speciality;
+    }
+
+    public function __toString(){
+        return $this->name;
     }
 }

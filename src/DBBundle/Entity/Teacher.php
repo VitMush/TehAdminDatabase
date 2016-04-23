@@ -3,15 +3,15 @@
 namespace DBBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Subject
+ * Teacher
  *
- * @ORM\Table(name="subjects")
- * @ORM\Entity(repositoryClass="DBBundle\Repository\SubjectRepository")
+ * @ORM\Table(name="teacher")
+ * @ORM\Entity(repositoryClass="DBBundle\Repository\TeacherRepository")
  */
-class Subject
+class Teacher
 {
     /**
      * @var int
@@ -25,16 +25,16 @@ class Subject
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=30)
+     * @ORM\Column(name="name", type="string", length=50)
      */
     private $name;
 
     /**
-     * @var Teacher
+     * @var ArrayCollection
      *
-     * @ORM\OneToOne(targetEntity="Teacher", mappedBy="subjects", orphanRemoval=false)
+     * @ORM\ManyToOne(targetEntity="Subject", inversedBy="subjects")
      */
-    private $teacher;
+    private $subjects;
 
 
     /**
@@ -51,7 +51,7 @@ class Subject
      * Set name
      *
      * @param string $name
-     * @return Subject
+     * @return Teacher
      */
     public function setName($name)
     {
@@ -71,30 +71,28 @@ class Subject
     }
 
     /**
-     * Set teacher
+     * Set subjects
      *
-     * @param Teacher $teacher
-     * @return Subject
+     * @param ArrayCollection $subjects
+     * @return Teacher
      */
-    public function setTeacher(Teacher $teacher)
-    {
-        $this->teacher = $teacher;
-
+    public function setSubjects(ArrayCollection $subjects){
+        $this->subjects = $subjects;
         return $this;
     }
 
     /**
-     * Get teacher
+     * Get subjects
      *
-     * @return mixed
+     * @return ArrayCollection
      */
-    public function getTeacher()
-    {
-        return $this->teacher;
+    public function getSubjects(){
+        return $this->subjects;
     }
 
     public function __toString(){
         return $this->name;
         //return empty($title) ? 'hell' : $title;
     }
+
 }

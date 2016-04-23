@@ -4,7 +4,7 @@ services:
         class: AppBundle\Admin\BlogPostAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: "Content", label: "Blog Post" }
-        arguments:  [~, AppBundle\Entity\BlogPost, ~]
+        arguments:  [~, AppBundle\Entity\BlogPost, SonataAdminBundle:CRUD]
         calls:
             - [ setTranslationDomain, [AppBundle]]
             - [addChild, [@app.admin.news, service]]

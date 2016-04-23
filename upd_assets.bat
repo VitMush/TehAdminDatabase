@@ -3,3 +3,5 @@ php app/console cache:clear
 if %errorlevel% neq 0 exit /b %errorlevel%
 @echo on
 php app/console assets:install --symlink
+@echo off
+echo  

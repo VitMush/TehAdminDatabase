@@ -2,6 +2,7 @@
 
 namespace DBBundle\Admin;
 
+use DBBundle\DBBundle;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,8 +14,18 @@ class GroupAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->tab('Table')
+            ->end()
+            ->tab('Edit')
+                ->with('General', array('class' => 'col-md-4'))
                 ->add('name', 'text')
-                ->add("speciality", 'text');
+                ->add("speciality", 'text')
+                ->end()
+                ->with("Student List", array('class' => 'col-md-5'))
+                    ->add('students', 'sonata_type_model', array('class' => 'DBBundle\Entity\Student', 'required' => false, 'multiple' => true))
+                ->end()
+            ->end();
+
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

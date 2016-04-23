@@ -2,16 +2,37 @@
 
 namespace DBBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Student
  *
- * @ORM\Table(name="students")
+ * @ORM\Table(name="student")
  * @ORM\Entity(repositoryClass="DBBundle\Repository\StudentRepository")
  */
 class Student
 {
+    /**
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="student", orphanRemoval=true)
+     */
+    private $inGroup;
+
+    public function  _constructor(){
+        $this->inGroup = new ArrayCollection();
+    }
+
+    /**
+     * Get inGroup
+     *
+     * @return ArrayCollection
+     */
+    public function  getGroup()
+    {
+        return $this->inGroup;
+    }
+
+
     /**
      * @var int
      *
@@ -390,5 +411,9 @@ class Student
     public function getRecordbook()
     {
         return $this->recordbook;
+    }
+
+    public function __toString(){
+        return $this->name;
     }
 }

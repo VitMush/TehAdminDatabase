@@ -34,6 +34,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'FormType/extending_table.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -89,7 +91,7 @@ sonata_admin:
                 type: sonata.block.service.text
                 settings:
                     content: >
-                        <h2>Welcome to my AdminDB Sonata- project</h2>
+                        <h2>Welcome to my AdminDB project</h2>
                         <h3>Get lucky here, and don't break anything =)</h3>
             -
                 class: col-md-5
@@ -97,7 +99,7 @@ sonata_admin:
                 type: sonata.admin.block.admin_list
                 settings:
                     groups: [admin.group.main]
-                
+
             -
                 class: col-md-5
                 position: left
@@ -112,15 +114,30 @@ sonata_admin:
                     - app.admin.blogpost
                     - app.admin.category
             admin.group.db:
-                label: Database
+                label: Lists
                 label_catalogue: DBBundle
                 items:
                     - db.admin.group
                     - db.admin.student
+                    - db.admin.teacher
+                    - db.admin.subject
+            #admin.group.knp.lists:
+                #label: Lists
+                #label_catalogue: ~
+                #items:
+                    #- db.admin.student
+                    #- db.admin.group
+                    #- route: students_home
+                    #  label: Some
+                    #- route:        stedents_article
+                    #  route_params: { articleId: 3 }
+                    #  label:        Article
 
-                    
+
             #sonata.admin.groups.demo:
                 #label: Demo
                 #label_catalogue: DemoBundle
                 #items:
                     #- sonata.demo.admin.car
+    templates:
+        layout: custom_standard_layout.html.twig
