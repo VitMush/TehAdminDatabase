@@ -58,6 +58,13 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        mappings:
+            DBBundle:
+                type: ~
+                dir: "Entity"
+                prefix: "DBBundle/Entity"
+                is_bundle: ~
+                    
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -121,6 +128,7 @@ sonata_admin:
                     - db.admin.student
                     - db.admin.teacher
                     - db.admin.subject
+                    - db.admin.mark
             #admin.group.knp.lists:
                 #label: Lists
                 #label_catalogue: ~

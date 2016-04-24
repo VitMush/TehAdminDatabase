@@ -28,3 +28,10 @@ services:
             arguments: [~, DBBundle\Entity\Teacher, ~]
             calls:
                 - [ setTranslationDomain, [DBBundle]]
+    db.admin.mark:
+            class: DBBundle\Admin\MarkAdmin
+            tags:
+                - {name: sonata.admin, manager_type: orm, label: "Mark" }
+            arguments: [~, DBBundle\Entity\Mark, ~]
+            calls:
+                - [ setTranslationDomain, [DBBundle]] 

@@ -6,14 +6,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class TableType extends AbstractType
+class MarkType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'choices' => array(
-                'm' => 'Male',
-                'f' => 'Female',
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5
             )
         ));
     }
@@ -23,3 +26,4 @@ class TableType extends AbstractType
         return ChoiceType;
     }
 }
+
