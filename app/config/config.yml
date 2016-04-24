@@ -58,12 +58,6 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-        mappings:
-            DBBundle:
-                type: ~
-                dir: "Entity"
-                prefix: "DBBundle/Entity"
-                is_bundle: ~
                     
 
 # Swiftmailer Configuration
