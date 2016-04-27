@@ -5,13 +5,19 @@ namespace DBBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Mark
- * @ORM\Table(name"mark")
+ * Grade
+ * 
+ * @ORM\Table(name="mark")
+ * @ORM\Entity(repositoryClass="DBBundle\Repository\MarkRepository")
  */
 class Mark
 {
     /**
      * @var int
+     * 
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -40,7 +46,7 @@ class Mark
         return $this->id;
     }
 
-    /**
+  /**
      * Set student
      *
      * @return Mark
