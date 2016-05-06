@@ -13,26 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Student
 {
-    /**
-     * @ORM\OneToMany(targetEntity="Group", mappedBy="student", orphanRemoval=true)
-     */
-    private $inGroup;
 
-    public function  _constructor(){
-        $this->inGroup = new ArrayCollection();
+    public function  __construct(){
+        //$this->group = new ArrayCollection();
     }
 
-    /**
-     * Get inGroup
-     *
-     * @return ArrayCollection
-     */
-    public function  getGroup()
-    {
-        return $this->inGroup;
-    }
-
-
+    
+    
+    
     /**
      * @var int
      *
@@ -126,6 +114,23 @@ class Student
      */
     private $recordbook;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="students")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $group;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Mark", mappedBy="students", orphanRemoval=true)
+     */
+    private $marks;
+
+
+
+
+
+
+    
 
     /**
      * Get id
@@ -411,6 +416,88 @@ class Student
     public function getRecordbook()
     {
         return $this->recordbook;
+    }
+
+    /**
+     * Set group
+     *
+     * @param mixed $group
+     *
+     * @return Student
+     */
+    public function setGroup($group){
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return mixed
+     */
+    public function  getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Detach Group
+     *
+     * @return Student
+     */
+    public function detachGroup(){
+        $this->removeGroup();
+
+        return $this;
+    }
+
+    /**
+     * Remove Group
+     *
+     * @return $this
+     */
+    public function removeGroup(){
+        $this->group = null;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $marks
+     * @return $this
+     */
+    public function setMarks($marks){
+        foreach($marks as $mark){
+            $this->addMark($mark);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Mark $mark
+     * @return $this
+     */
+    public function addMark(Mark $mark){
+        $mark->setStudent($this);
+        $this->marks->add($mark);
+
+        return $this;
+    }
+
+    /**
+     * @param Mark $mark
+     */
+    public function removeMark(Mark $mark){
+        $this->marks->removeElement($mark);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMark(){
+        return $this->marks;
     }
 
     public function __toString(){

@@ -13,29 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Group
 {
-    /**
-     * @ORM\ManyToMany(targetEntity="Student", inversedBy="groups")
-     */
-    private $students;
 
-    /**
-     * Set students
-     *
-     * @param ArrayCollection $students
-     */
-    public function setStudents(ArrayCollection $students)
-    {
-        $this->students = $students;
-    }
-
-    /**
-     * Get students
-     *
-     * @return ArrayCollection
-     */
-    public function getStudents()
-    {
-        return $this->students;
+    public function __construct(){
+        $this->students = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
     }
 
     /**
@@ -60,6 +41,26 @@ class Group
      * @ORM\Column(name="speciality", type="string", length=20)
      */
     private $speciality;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Student", mappedBy="group", cascade={"persist"}, orphanRemoval=false)
+     */
+    private $students;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Subject", inversedBy="groups")
+     */
+    private $subjects;
+
+
+
+
+
+    /*public function preRemove(){
+        $this->removeStudents();
+    }*/
+
+
 
 
     /**
@@ -113,9 +114,94 @@ class Group
      *
      * @return string 
      */
-    public function getSpeciality()
+            public function getSpeciality()
     {
         return $this->speciality;
+    }
+
+    /**
+     * Set students
+     *
+     * @param ArrayCollection $students
+     *
+     * @return Group
+     */
+    public function setStudents(ArrayCollection $students)
+    {
+        if($students->count() > 0) {
+            foreach ($students as $student) {
+                $this->addStudent($student);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add Student
+     *
+     * @param Student $student
+     * @return $this
+     */
+    public function addStudent(Student $student){
+        $student->setGroup($this);
+        if(!$this->students->contains($student))
+            $this->students->add($student);
+
+        return $this;
+    }
+
+    /**
+     * Remove Student
+     *
+     * @param Student $student
+     * @return $this
+     */
+    public function removeStudent(Student $student){
+
+        $student->setGroup(null);
+        $this->students->removeElement($student);
+
+        return $this;
+    }
+
+    /**
+     * Remove Students
+     *
+     * @return $this
+     */
+    public function removeStudents(){
+        foreach($this->students as $student)
+            $this->removeStudent($student);
+
+        return $this;
+    }
+
+    /**
+     * Get students
+     *
+     * @return ArrayCollection
+     */
+    public function getStudents()
+    {
+        return $this->students;
+    }
+
+    /**
+     * @param mixed $subjects
+     * @return $this
+     */
+    public function setSubjects($subjects){
+        $this->subjects = $subjects;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubjects(){
+        return $this->subjects;
     }
 
     public function __toString(){

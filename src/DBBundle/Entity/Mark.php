@@ -22,17 +22,19 @@ class Mark
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Student")
+     * @ORM\ManyToOne(targetEntity="Student", inversedBy="marks")
+     * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
      */
     private $student;
 
     /**
-     * @ORM\OneToOne(targetEntity="Subject")
+     * @ORM\ManyToOne(targetEntity="Subject", inversedBy="marks")
+     * @ORM\JoinColumn(name="subject_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private $subj;
+    private $subject;
 
     /**
-     * @var tinyint
+     * @ORM\Column(length=15)
      */
     private $mark;
 
@@ -72,20 +74,20 @@ class Mark
      *
      * @return Mark
      */
-    public function setSubject($subj)
+    public function setSubject($subject)
     {
-        $this->subj = $subj;
+        $this->subject = $subject;
 
         return $this;
     }
 
     /**
-     * Get subj
+     * Get subjz`
      *
      */
     public function getSubject()
     {
-        return $this->subj;
+        return $this->subject;
     }
 
     /**

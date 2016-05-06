@@ -2,6 +2,7 @@
 
 namespace DBBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -13,6 +14,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Subject
 {
+    
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+    }
+
     /**
      * @var int
      *
@@ -32,9 +39,25 @@ class Subject
     /**
      * @var Teacher
      *
-     * @ORM\OneToOne(targetEntity="Teacher", mappedBy="subjects", orphanRemoval=false)
+     * @ORM\ManyToOne(targetEntity="Teacher", inversedBy="subjects")
+     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
      */
     private $teacher;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Group", mappedBy="subjects")
+     */
+    private $groups;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Mark", mappedBy="subjects")
+     */
+    private $marks;
+
+
+
+
+
 
 
     /**
@@ -73,7 +96,7 @@ class Subject
     /**
      * Set teacher
      *
-     * @param Teacher $teacher
+     * @param mixed $teacher
      * @return Subject
      */
     public function setTeacher(Teacher $teacher)
@@ -93,8 +116,29 @@ class Subject
         return $this->teacher;
     }
 
+    /**
+     * @param mixed $groups
+     * @return $this
+     */
+    public function setGroups($groups){
+        $this->groups = $groups;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroups(){
+        return $this->groups;
+    }
+
+    public function getMarks(){
+        return $this->marks;
+    }
+
     public function __toString(){
-        return $this->name;
+        return $this->name . ' (' . $this->teacher . ')';
         //return empty($title) ? 'hell' : $title;
     }
 }

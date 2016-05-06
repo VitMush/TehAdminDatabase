@@ -17,7 +17,13 @@ class SubjectAdmin extends Admin
                 'class' => 'DBBundle\Entity\Teacher',
                 'property' => 'name',
                 'required' => true
-            ));
+            ))
+            ->add('groups', 'sonata_type_model', array(
+                'class' => 'DBBundle:Group',
+                'required' => false,
+                'multiple' => true
+            ))
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -43,7 +49,7 @@ class SubjectAdmin extends Admin
     public function toString($object) {
         //return $object->getName();
         return $object instanceof \DBBundle\Entity\Subject
-            ? $object->getName().$object->getTeacher()
+            ? $object->getName().'('.$object->getTeacher().')'
             : '_some_ Subject';
     }
 }

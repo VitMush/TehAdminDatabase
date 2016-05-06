@@ -12,7 +12,7 @@ class StudentAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-                ->add('name', 'text')
+                ->add('name', 'text', array())
                 ->add("number", 'text')
                 ->add('bk', 'text')
                 ->add('birth', 'date', array('years' => range(1990, date('Y'))))
@@ -23,7 +23,17 @@ class StudentAdmin extends Admin
                 ->add('status', 'text')
                 ->add('address', 'text')
                 ->add('parents', 'text')
-                ->add('notation', 'text');
+                ->add('notation', 'text', array())
+                ->add('group', 'sonata_type_model', array('class' => 'DBBundle\Entity\Group', 'required' => false));
+
+        $subject = $this->getSubject();
+        $creation = $subject && $subject->getId() ? false : true;
+
+        /*if(!$creation) {
+            if (!is_null($subject->getGroup()))
+                $this->log(implode($subject->getGroup()->getValues()));
+            else $this->log('No Groups');
+        }*/
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -42,6 +52,7 @@ class StudentAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+                ->add('id')
                 ->addIdentifier('name')
                 ->add("number")
                 ->add('bk')
@@ -62,8 +73,15 @@ class StudentAdmin extends Admin
            ->add('id')
            ->add('name');
     }
+
+    /**
+     * @param mixed $message
+     */
+    private function log($message){
+        $this->getConfigurationPool()->getContainer()->get('Logger')->debug($message);
+    }
     
-        public function toString($object) {
+    public function toString($object) {
         //return $object->getName();
         return $object instanceof \DBBundle\Entity\Student
                 ? $object->getName() 

@@ -32,7 +32,7 @@ class Teacher
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToOne(targetEntity="Subject", inversedBy="subjects")
+     * @ORM\OneToMany(targetEntity="Subject", mappedBy="teacher", orphanRemoval=true)
      */
     private $subjects;
 

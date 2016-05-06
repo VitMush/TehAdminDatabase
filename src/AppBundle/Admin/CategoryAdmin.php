@@ -11,7 +11,13 @@ class CategoryAdmin extends Admin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('name', 'text')->add("number", 'integer');
+        $formMapper->add('name', 'text')->add("number", 'integer')
+            ->add('blogposts', 'sonata_type_model', array(
+                        'class' => 'AppBundle\Entity\BlogPost',
+                        'property' => 'title',
+                        'required' => false,
+                        'multiple' => true
+                        ));
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
