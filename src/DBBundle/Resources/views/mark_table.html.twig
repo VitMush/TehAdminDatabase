@@ -1,0 +1,8 @@
+{% extends base_template %}
+
+{# SonataAdminBundle:CRUD/edit_text.html.twig #}
+{% bloc body %}
+    {% for student in students %}
+        {{ include('SonataAdminBundle:CRUD/edit_text.html.twig', {'field_element' : student})
+    {% endfor %}
+{% endblock %}

@@ -13,6 +13,7 @@ use DBBundle\Entity\Group;
 use DBBundle\Entity\Student;
 use DBBundle\Entity\Mark;
 use DBBundle\Entity\Subject;
+use Symfony\Component\Form\Form;
 
 class GroupAdmin extends Admin
 {
@@ -35,35 +36,40 @@ class GroupAdmin extends Admin
             $this->getConfigurationPool()->getContainer()->get('Logger')->debug($group.getName());*/
         }
 
-        /*if(!$creation)
+        /*if(!$creation){
             $formMapper
                 ->tab('Table')
-                    ->add('Table', TableType::class, array('table' => $this->formTable($this->id($this->getSubject()))))
+                    ->add('students', "sonata_type_model_autocomplete", array(
+                        'template' => "DBBundle:mark_table.html.twi",
+                        'table' => $this->formTable(),
+                        'students' => array('someStudent' => 'hello', 's2' => 'bye'),    
+                        ))
+                ->end()->end();
+        }*/
+        $formMapper
+                ->tab('Edit')
+                    ->with('General', array('class' => 'col-md-4'))
+                        ->add('name', 'text')
+                        ->add("speciality", 'text')
+                    ->end()
+                    ->with("Subjects List", array('class' => 'col-md-7'))
+                        ->add('subjects', 'sonata_type_model', array(
+                            'class' => 'DBBundle\Entity\Subject',
+                            'by_reference' => false,
+                            'required' => false,
+                            'multiple' => true
+                        ))
+                    ->end()
+                    ->with("Student List", array('class' => 'col-md-7'))
+                        ->add('students', 'sonata_type_model', array(
+                            'class' => 'DBBundle\Entity\Student',
+                            'property' => 'name',
+                            'by_reference' => false,
+                            'required' => false,
+                            'multiple' => true
+                        ))
+                    ->end()
                 ->end();
-*/
-        $formMapper->tab('Edit')
-                ->with('General', array('class' => 'col-md-4'))
-                ->add('name', 'text')
-                ->add("speciality", 'text')
-                ->end()
-                ->with("Subjects List", array('class' => 'col-md-7'))
-                    ->add('subjects', 'sonata_type_model', array(
-                        'class' => 'DBBundle\Entity\Subject',
-                        'by_reference' => false,
-                        'required' => false,
-                        'multiple' => true
-                    ))
-                ->end()
-                ->with("Student List", array('class' => 'col-md-7'))
-                    ->add('students', 'sonata_type_model', array(
-                        'class' => 'DBBundle\Entity\Student',
-                        'property' => 'name',
-                        'by_reference' => false,
-                        'required' => false,
-                        'multiple' => true
-                    ))
-                ->end()
-            ->end();
 
     }
 
@@ -103,12 +109,40 @@ class GroupAdmin extends Admin
                 : '_some_ Category';
     }
 
-    private function formTable($groupId){
+    private function formTable(){
         //$doc = $this->getConfigurationPool()->getContainer()->get('Doctrine');
         //$group = $doc->getRepository('DBBundle:Group')->find($groupId);
+        $group = $this->getSubject();
+        $students = $group->getStudents();
+        $subjects = $group->getSubjects();
+        
+        $studentsNames = array(); $subjectsNames = array(); $marks = array(); $sbujectsIds = array();
+        
+        foreach($subjects as $subject){
+            array_push($subjectsNames, $subject->getName());
+            array_push($subjectsIds, $subject->getId());
+        }
+        
+        foreach($students as $student){
+            array_push($studentsNames, $student->getName());
+            $row = array();
+            foreach($subjectsIds as $subjectId){
+                foreach($student->getMarks() as $mark){
+                    if($subjectId == $mark->getSubject()->getId()){
+                        array_push($row, $mark->getMark());
+                        break;
+                    }
+                }
+            }
+            array_push($marks, $row);
+        }
         
         
-        $table = array();
+        return array(
+            'students' => $studentsNames,
+            'subjects' => $subjectsNames,
+            'marksTable' => $marks
+        );
     }
 
     private function log($message){

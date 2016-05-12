@@ -496,7 +496,7 @@ class Student
     /**
      * @return mixed
      */
-    public function getMark(){
+    public function getMarks(){
         return $this->marks;
     }
 
