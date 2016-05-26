@@ -6,11 +6,15 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+  bundles_dir: '%kernel.root_dir%/../src'
 
 framework:
     #esi:             ~
-    translator:      { fallbacks: ["%locale%"] }
+    default_locale: ru
+    translator:
+        fallbacks: [ru, en]
+        paths:
+            - "%bundles_dir%/DBBundle/Resources/translations"
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -21,7 +25,6 @@ framework:
     #serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
-    default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
@@ -92,7 +95,7 @@ sonata_block:
             
 sonata_admin:
     title: AdminDB
-    title_logo: bundles/app/images/logo_green_cloud.png
+    title_logo: /images/logo_green_cloud.png
     security:
         #handler: sonata.admin.security.handler.role
     dashboard:

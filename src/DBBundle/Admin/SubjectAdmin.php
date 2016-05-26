@@ -17,20 +17,25 @@ class SubjectAdmin extends Admin
         }
         else throw new Exception('hasParent');*/
 
+        $t = $this->getTranslator();
+
         $fastCreateRequest = false;
         if(strpos($this->getRequest()->getUri(), 'create?code')){
             $fastCreateRequest = true;
         }
 
         $formMapper
-            ->add('name', 'text')
-            ->add('teacher', 'sonata_type_model', array(
-                'class' => 'DBBundle\Entity\Teacher',
-                'property' => 'name',
-                'required' => true
-            ));
+            ->with($t->trans(('subject.subject')))
+                ->add('name', 'text', array('label' => $t->trans('subject.name')))
+                ->add('teacher', 'sonata_type_model', array(
+                    'label' => $t->trans('subject.teacher'),
+                    'class' => 'DBBundle\Entity\Teacher',
+                    'property' => 'name',
+                    'required' => true
+                ));
         if(!$fastCreateRequest)
         $formMapper->add('groups', 'sonata_type_model', array(
+                'label' => $t->trans('subject.groups'),
                 'class' => 'DBBundle:Group',
                 'required' => false,
                 'multiple' => true
@@ -40,16 +45,17 @@ class SubjectAdmin extends Admin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        $t = $this->getTranslator();
         $datagridMapper
-            ->add('name');
+            ->add('name', null, array('label' => $t->trans('subject.name')));
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
+        $t = $this->getTranslator();
         $listMapper
-            ->add('id')
-            ->addIdentifier('name', 'table', array('route' => array('name' => 'edit')))
-            ->addIdentifier('teacher');
+            ->addIdentifier('name', 'table', array('label' => $t->trans('subject.name'), 'route' => array('name' => 'edit')))
+            ->addIdentifier('teacher', null, array('label' => $t->trans('subject.teacher')));
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

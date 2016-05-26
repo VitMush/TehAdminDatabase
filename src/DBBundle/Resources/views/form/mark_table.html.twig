@@ -16,13 +16,13 @@
          <div class="box-body table-responsive no-padding">
           <table class="table table-bordered table-striped">
             <thaad><tr class="sonata-ba-list-field-header">
-                <th style="font-size: large" >{{ 'Student Name' }}</th>
-                <th style="font-size: large" > {{ 'B/K' }} </th>
+                <th style="font-size: large; width: 3em; background-color: white" >{{ 'Student Name' }}</th>
+                <th style="font-size: large; width: 1em; background-color: white" > {{ 'B/K' }} </th>
                 {% for subject in value['subjects']%}
-                    <th> {{ subject }} </th>
+                    <th style="width: 7em; background-color: white"> {{ subject }} </th>
                 {% endfor %}
-                <th style="font-size: large" >{{ "Avarage" }}</th>
-                <th style="font-size: large" > {{ "Notation" }} </th>
+                <th style="font-size: large; width: 1em; background-color: white" >{{ "Avarage" }}</th>
+                <th style="font-size: large; background-color: white" > {{ "Notation" }} </th>
             </tr><thead />
             <tbody>
 
@@ -43,10 +43,10 @@
                             {% if (value.marks is not empty) and (value.marks[studentId] is defined) and (value.marks[studentId][subjectId] is defined) %}
                                 {% set showValue=true %}
                             {% endif %}
-                                <input style="font-size: large;" class="form-control" size="12" list="markChoice" {{ block('id_name') }} type="text" {% if showValue %}value="{{ value['marks'][studentId][subjectId] }}" {% endif %} />
+                                <input style="width: 4em" style="font-size: large;" class="form-control" size="12" list="markChoice" {{ block('id_name') }} type="text" {% if showValue %}value="{{ value['marks'][studentId][subjectId] }}" {% endif %} />
                         </td>
                     {% endfor %}
-                    <td><b> {{ "" }} </b></td>
+                    <td style="align-content: center !important;"><h4 style="align-content: center !important;;"> {% if (value.average is defined) and (value.average[studentId] is defined) %}{{ value.average[studentId] }} {% endif %} </h4></td>
                     <td><b> {{ value['notation'][studentId] }} </b></td>
                 </tr>
             {% endfor %}

@@ -12,26 +12,50 @@ class StudentAdmin extends Admin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $t = $this->getTranslator();
         $formMapper
-                ->add('name', 'text', array())
-                ->add("number", 'text')
-                ->add('bk', 'choice', array(
-                    'expanded' => true,
-                    'choices' => array(
-                        'b' => 'Б',
-                        'k' => 'К'
-                    )
-                ))
-                ->add('birth', 'date', array('years' => range(1990, date('Y'))))
-                ->add('personCertificate', 'text')
-                ->add('inn', 'text')
-                ->add('gender', GenderType::class, array('expanded' => true))
-                ->add('recordbook', 'text')                
-                ->add('status', 'text')
-                ->add('address', 'text')
-                ->add('parents', 'text')
-                ->add('notation', 'text', array())
-                ->add('group', 'sonata_type_model', array('class' => 'DBBundle\Entity\Group', 'required' => false));
+                ->with($t->trans('student.mainInfo'), array('class' => 'col-md-4'))
+                    ->add('name', 'text', array('label' => $t->trans('student.name')))
+                    ->add('bk', 'choice', array(
+                        'label' => $t->trans('student.bk'),
+                        'expanded' => true,
+                        'choices' => array(
+                            'b' => $t->trans('student.b'),
+                            'k' => $t->trans('student.b')
+                        )
+                    ))
+                    ->add('gender', 'choice', array(
+                        'label' => $t->trans('student.gender'), 
+                        'expanded' => true,
+                        'choices' => array(
+                            'm' => $t->trans('student.male'),
+                            'f' => $t->trans('student.female')))
+                        )
+                    ->add('birth', 'date', array(
+                        'label' => $t->trans('student.birth'),
+                        'years' => range(1990, date('Y'))))
+                    ->add('status', 'text', array('label' => $t->trans('student.status')))
+                    ->add('group', 'sonata_type_model', array(
+                        'label' => $t->trans('student.group'),
+                        'class' => 'DBBundle\Entity\Group',
+                        'required' => false))
+                ->end()
+
+                ->with($t->trans('student.contactInfo'), array('class' => 'col-md-4'))
+                    ->add('address', 'text', array('label' => $t->trans('student.address')))
+                    ->add("number", 'text', array('label' => $t->trans('student.number')))
+                    ->add('parents', 'textarea', array('label' => $t->trans('student.parents')))
+                ->end()
+
+            ->with($t->trans('student.adableInfo'), array('class' => 'col-md-4'))
+            ->add('notation', 'textarea', array('label' => $t->trans('student.notation')))
+            ->end()
+
+                ->with($t->trans('student.personalInfo'), array('class' => 'col-md-5'))
+                    ->add('personCertificate', 'text', array('label' => $t->trans('student.personal')))
+                    ->add('inn', 'text', array('label' => $t->trans('student.inn')))
+                    ->add('recordBook', 'text', array('label' => $t->trans('student.record')))
+                ->end();
 
         $subject = $this->getSubject();
         $creation = $subject && $subject->getId() ? false : true;
@@ -45,33 +69,27 @@ class StudentAdmin extends Admin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        $t = $this->getTranslator();
         $datagridMapper
-                ->add('name')
-                ->add("number")
-                ->add('bk')
-                ->add('birth', 'doctrine_orm_date', array('input_type' => 'timestamp', 'years' => range(1990, date('Y'))))
-                ->add('gender')
-                ->add('recordbook')    
-                ->add('status')
-                ->add('address');
+                ->add('name', null, array('label' => $t->trans('student.name')))
+                ->add("number", null, array('label' => $t->trans('student.number')))
+                ->add('bk', null, array('label' => $t->trans('student.bk')))
+                //->add('birth', 'doctrine_orm_date', array('input_type' => 'timestamp', 'years' => range(1990, date('Y'))))
+                ->add('recordbook', null, array('label' => $t->trans('student.record')));
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
+        $t = $this->getTranslator();
         $listMapper
-                ->add('id')
-                ->addIdentifier('name')
-                ->add("number")
-                ->add('bk')
-                ->add('birth')
-                ->add('personCertificate')
-                ->add('inn')
-                ->add('gender')
-                ->add('recordbook')                
-                ->add('status')
-                ->add('address')
-                ->add('parents')
-                ->add('notation');
+                ->addIdentifier('name', null, array('label' => $t->trans('student.name')))
+                ->add('gender', null, array('label' => $t->trans('student.gender')))
+                ->add('bk', null, array('label' => $t->trans('student.bk')))
+                ->add('birth', null, array('label' => $t->trans('student.birth')))
+                ->add("number", null, array('label' => $t->trans('student.number')))
+                ->add('recordBook', null, array('label' => $t->trans('student.record')))
+                ->add('status', null, array('label' => $t->trans('student.status')))
+                ->add('notation', null, array('label' => $t->trans('student.notation')));
     }
     
     protected function configureShowFields(ShowMapper $showMapper)

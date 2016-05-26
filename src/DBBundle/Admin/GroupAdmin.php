@@ -42,28 +42,33 @@ class GroupAdmin extends Admin
             $this->getConfigurationPool()->getContainer()->get('Logger')->debug($group.getName());*/
         }
 
+        $t = $this->getTranslator();
+
         if(!$creation){
             $formMapper
-                ->tab('Table')
-                    ->add('marksTable', MarkTableType::class, array('required' => false))
+                ->tab($t->trans('group.marksT'))
+                    ->with($t->trans('group.marksT'))
+                        ->add('marksTable', MarkTableType::class, array('label' => $t->trans('group.marks.marksTable'), 'required' => false))
                 ->end()->end();
         }
         $formMapper
-                ->tab('Edit')
-                    ->with('General', array('class' => 'col-md-4'))
-                        ->add('name', 'text', array(/*'label' => $this->trans('admin_name')*/))
-                        ->add("speciality", 'text')
+                ->tab($t->trans('group.editT'))
+                    ->with($t->trans('group.edit.general'), array('class' => 'col-md-4'))
+                        ->add('name', 'text', array('label' => $t->trans('group.name')))
+                        ->add("speciality", 'text', array('label' => $t->trans('group.speciality')))
                     ->end()
-                    ->with("Subjects List", array('class' => 'col-md-7'))
+                    ->with($t->trans('group.edit.subjectsList'), array('class' => 'col-md-7'))
                         ->add('subjects', 'sonata_type_model', array(
+                            'label' => $t->trans('group.subjects'),
                             'class' => 'DBBundle\Entity\Subject',
                             'by_reference' => false,
                             'required' => false,
                             'multiple' => true
                         ))
                     ->end()
-                    ->with("Student List", array('class' => 'col-md-7'))
+                    ->with($t->trans('group.edit.studentsList'), array('class' => 'col-md-7'))
                         ->add('students', 'sonata_type_model', array(
+                            'label' => $t->trans('group.students'),
                             'class' => 'DBBundle\Entity\Student',
                             'property' => 'name',
                             'by_reference' => false,
@@ -73,8 +78,9 @@ class GroupAdmin extends Admin
                     ->end()->end();
         if(!$creation){
             $formMapper
-                ->tab('Schedule')
-                    ->add('scheduleTable', ScheduleType::class)
+                ->tab($t->trans('group.scheduleT'))
+                    ->with($t->trans('group.schedule.scheduleTable'))
+                        ->add('scheduleTable', ScheduleType::class, array('label' => $t->trans('group.schedule.scheduleTable')))
                 ->end()->end();
         }
 
@@ -82,23 +88,25 @@ class GroupAdmin extends Admin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        $t = $this->getTranslator();
         $datagridMapper
-                ->add('name')
-                ->add('speciality');
+                ->add('name', null, array('label' => $t->trans('group.name')))
+                ->add('speciality', null, array('label' => $t->trans('group.speciality')));
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
+        $t = $this->getTranslator();
         $listMapper
-                ->addIdentifier('name')
-                ->add('speciality');
+                ->addIdentifier('name', null, array('label' => $t->trans('group.name')))
+                ->add('speciality', null, array('label' => $t->trans('group.speciality')));
     }
     
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
-            ->add('name');
+            ->add('id', null, array())
+            ->add('name', null, array());
     }
 
     public function prePersist($group){

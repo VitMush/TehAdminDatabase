@@ -2,7 +2,7 @@ services:
     db.admin.group:
         class: DBBundle\Admin\GroupAdmin
         tags:
-            - {name: sonata.admin, manager_type: orm, label: "Group" }
+            - {name: sonata.admin, manager_type: orm, label: "Группы" }
         arguments: [~, DBBundle\Entity\Group, ~]
         calls:
             - [ setTranslationDomain, [DBBundle]]
@@ -10,21 +10,21 @@ services:
     db.admin.student:
         class: DBBundle\Admin\StudentAdmin
         tags:
-            - {name: sonata.admin, manager_type: orm, label: "Student" }
+            - {name: sonata.admin, manager_type: orm, label: "Студенты" }
         arguments: [~, DBBundle\Entity\Student, ~]
         calls:
             - [ setTranslationDomain, [DBBundle]]
     db.admin.subject:
         class: DBBundle\Admin\SubjectAdmin
         tags:
-            - {name: sonata.admin, manager_type: orm, label: "Subject" }
+            - {name: sonata.admin, manager_type: orm, label: "Предметы" }
         arguments: [~, DBBundle\Entity\Subject, ~]
         calls:
             - [ setTranslationDomain, [DBBundle]]
     db.admin.teacher:
             class: DBBundle\Admin\TeacherAdmin
             tags:
-                - {name: sonata.admin, manager_type: orm, label: "Teacher" }
+                - {name: sonata.admin, manager_type: orm, label: "Преподаватели" }
             arguments: [~, DBBundle\Entity\Teacher, ~]
             calls:
                 - [ setTranslationDomain, [DBBundle]]

@@ -1,3 +1,64 @@
-dashboard_group: Группа
-dashboard_student: Студент
-admin_name: Имя
+dashboard:
+  group: Группы
+  student: Студенты
+  teacher: Учителя
+  subject: Предметы
+group:
+    marksT: Оценки
+    editT: Редактирование
+    scheduleT: Расписание
+    name: Название
+    speciality: Специальность
+    subjects: Предметы
+    students: Студенты
+    edit:
+        general: Основные
+        subjectsList: Список предметов
+        studentsList: Список студентов
+    marks:
+        marksTable: Таблица оценок
+        studentName: Имя студента
+        bk: Б/R
+        average: Средний бал
+        notation: Примечание
+    schedule:
+        scheduleTable: Таблица расписания
+        day: День недели
+        alarms: Расписание звонков
+        lesson: Лента
+        subject: Предмет
+        room: Аудитория
+        teacher: Преподаватель
+teacher:
+    teacher: Преподаватель
+    name: ФИО
+    subjects: Предметы
+subject:
+    name: Имя
+    teacher: Преподаватель
+    groups: Группы
+    subject: Предмет
+student:
+    mainInfo: Основная информация
+    personalInfo: Персональная информация
+    contactInfo: Контактная информация
+    adableInfo: Дополнительная информация
+    name: ФИО студента
+    bk: Б/К
+    birth:  Дата, год рождения
+    inn: Идентификация личности, ИНН
+    gender: Пол
+    status: Социальный статус
+    address: Домашний адресс
+    number: Номер телефона
+    parents: Сведенья о родителях
+    notation: Примечание
+    record: № зачетной книжки
+    group: Группа
+    personal: Личный сертификат
+    b: Б
+    k: К
+    male: Мужчина
+    female: Женщина
+
+
