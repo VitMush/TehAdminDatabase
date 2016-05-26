@@ -1,0 +1,12 @@
+{% block gender_widget %}
+    {% spaceless %}
+        {% if expanded %}
+
+                {{ form_widget(form) }}
+
+        {% else %}
+            {# just let the choice widget render the select tag #}
+            {{ block('choice_widget') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

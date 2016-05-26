@@ -4,6 +4,7 @@ namespace DBBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Group
@@ -17,6 +18,9 @@ class Group
     public function __construct(){
         $this->students = new ArrayCollection();
         $this->subjects = new ArrayCollection();
+        $this->marksTable = array('marks' => array());
+        $this->scheduleTable = array('subject_choice' => array(), 'rooms' => array());
+        $this->subjectsChanged = false;
     }
 
     /**
@@ -44,21 +48,29 @@ class Group
 
     /**
      * @ORM\OneToMany(targetEntity="Student", mappedBy="group", cascade={"persist"}, orphanRemoval=false)
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $students;
 
     /**
      * @ORM\ManyToMany(targetEntity="Subject", inversedBy="groups")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $subjects;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $marksTable;
+
+    /**
+     * @Orm\Column(type="array", nullable = true)
+     */
+    private $scheduleTable;
+
+    private $subjectsChanged;
 
 
-
-
-    /*public function preRemove(){
-        $this->removeStudents();
-    }*/
 
 
 
@@ -191,7 +203,12 @@ class Group
      * @param mixed $subjects
      * @return $this
      */
-    public function setSubjects($subjects){
+    public function setSubjects($subjects)
+    {
+        if($this->subjects != $subjects){
+            $this->subjectsChanged = true;
+        }
+
         $this->subjects = $subjects;
 
         return $this;
@@ -204,7 +221,110 @@ class Group
         return $this->subjects;
     }
 
-    public function __toString(){
+    public function setMarksTable(array $value)
+    {
+        if($value == null || $value['marks'] == null){
+            return;
+        }
+
+        foreach($value['marks'] as $studentId => $subjects){
+            foreach($subjects as $subjectId => $mark){
+                $this->marksTable['marks'][$studentId][$subjectId] = $mark;
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMarksTable()
+    {
+        return $this->formMarksTable();
+    }
+
+    public function formMarksTable(){
+        
+        if($this->subjects->isEmpty() || $this->students->isEmpty()) {
+            return;
+        }
+
+        /*$sortedSubjects = asort($this->subjects->getValues(), SORT_STRING);
+        $sortedStudents = asort($this->students->getValues(), SORT_STRING);*/
+
+        $subjectsObj = $this->subjects->getValues();
+        $subjects = array();
+        foreach($subjectsObj as $subject){
+            $subjects[$subject->getId()] = $subject->getName();
+        }
+
+        $studentsObj = $this->students->getValues();
+        $students = array(); $bk = array(); $notation = array();
+        foreach($studentsObj as $student){
+            $studentId = $student->getId();
+            $students[$studentId] = $student->getName();
+            $bk[$studentId] = $student->getBK();
+            $notation[$studentId] = $student->getNotation();
+        }
+
+        $table = array(
+            'students' => $students,
+            'subjects' => $subjects,
+            'marks' => array(),
+            'bk' => $bk,
+            'notation' => $notation
+        );
+
+        if($this->marksTable['marks'] == null){
+            $this->marksTable['marks'] = array();
+        }
+
+        foreach($students as $studentId => $student) {
+            if (key_exists($studentId, $this->marksTable['marks'])) {
+                foreach ($subjects as $subjectId => $subject) {
+                    if (key_exists($subjectId, $this->marksTable['marks'][$studentId])) {
+                        $table['marks'][$studentId][$subjectId] = $this->marksTable['marks'][$studentId][$subjectId];
+                    }
+                }
+            }
+        }
+        
+        return $table;
+    }
+
+    public function setScheduleTable($table)
+    {
+        //throw new Exception('###_'.$table['rooms']['0']['1'].'_!!!');
+        $this->scheduleTable['subject_choice'] = $table['subject_choice'];
+        $this->scheduleTable['rooms'] = $table['rooms'];
+    }
+
+    public function getScheduleTable()
+    {
+        $table = $this->scheduleTable;
+        $table['subjects'] = array();
+        $table['teachers'] = array();
+        foreach($this->getSubjects() as $subject){
+            $name = $subject->getName();
+            $id = $subject->getId();
+            $table['subjects'][$id] = $name;
+            $table['subject_id'][$name] = $id;
+            
+            $table['teachers'][$subject->getId()] = $subject->getTeacher()->getName();
+        }
+        if(!$this->subjectsChanged) {
+            foreach($table['subject_choice'] as $i => $row){
+                foreach($row as $m => $name){
+                    if(!in_array($name, $table['subjects'])){
+                        $table['subject_choice'][$i][$m] = '';
+                    }
+                }
+            }
+        }
+
+        return $table;
+    }
+
+    public function __toString()
+    {
         return $this->name;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace DBBundle\Admin;
 
+use DBBundle\Form\Type\GenderType;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,11 +15,17 @@ class StudentAdmin extends Admin
         $formMapper
                 ->add('name', 'text', array())
                 ->add("number", 'text')
-                ->add('bk', 'text')
+                ->add('bk', 'choice', array(
+                    'expanded' => true,
+                    'choices' => array(
+                        'b' => 'Б',
+                        'k' => 'К'
+                    )
+                ))
                 ->add('birth', 'date', array('years' => range(1990, date('Y'))))
                 ->add('personCertificate', 'text')
                 ->add('inn', 'text')
-                ->add('gender', 'text')
+                ->add('gender', GenderType::class, array('expanded' => true))
                 ->add('recordbook', 'text')                
                 ->add('status', 'text')
                 ->add('address', 'text')
@@ -70,8 +77,8 @@ class StudentAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-           ->add('id')
-           ->add('name');
+            ->add('id')
+            ->add('name');
     }
 
     /**

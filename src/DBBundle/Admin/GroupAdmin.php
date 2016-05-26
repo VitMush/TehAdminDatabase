@@ -2,6 +2,8 @@
 
 namespace DBBundle\Admin;
 
+use DBBundle\Form\Type\MarkTableType;
+use DBBundle\Form\Type\ScheduleType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,6 +15,7 @@ use DBBundle\Entity\Group;
 use DBBundle\Entity\Student;
 use DBBundle\Entity\Mark;
 use DBBundle\Entity\Subject;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Form;
 
 class GroupAdmin extends Admin
@@ -25,7 +28,10 @@ class GroupAdmin extends Admin
     {
         $subject = $this->getSubject();
         $creation = $subject && $subject->getId() ? false : true;
-        $this->log($this->getClass());
+        //$this->log($this->getClass());
+
+        $some = array(2 => '2', 0 => '0', 4 => '4');
+        //throw new \Exception(implode(' ', array_keys($some)));
 
         if(!$creation){
             $this->log(implode($subject->getStudents()->getValues()));
@@ -36,20 +42,16 @@ class GroupAdmin extends Admin
             $this->getConfigurationPool()->getContainer()->get('Logger')->debug($group.getName());*/
         }
 
-        /*if(!$creation){
+        if(!$creation){
             $formMapper
                 ->tab('Table')
-                    ->add('students', "sonata_type_model_autocomplete", array(
-                        'template' => "DBBundle:mark_table.html.twi",
-                        'table' => $this->formTable(),
-                        'students' => array('someStudent' => 'hello', 's2' => 'bye'),    
-                        ))
+                    ->add('marksTable', MarkTableType::class, array('required' => false))
                 ->end()->end();
-        }*/
+        }
         $formMapper
                 ->tab('Edit')
                     ->with('General', array('class' => 'col-md-4'))
-                        ->add('name', 'text')
+                        ->add('name', 'text', array(/*'label' => $this->trans('admin_name')*/))
                         ->add("speciality", 'text')
                     ->end()
                     ->with("Subjects List", array('class' => 'col-md-7'))
@@ -68,8 +70,13 @@ class GroupAdmin extends Admin
                             'required' => false,
                             'multiple' => true
                         ))
-                    ->end()
-                ->end();
+                    ->end()->end();
+        if(!$creation){
+            $formMapper
+                ->tab('Schedule')
+                    ->add('scheduleTable', ScheduleType::class)
+                ->end()->end();
+        }
 
     }
 
@@ -90,8 +97,8 @@ class GroupAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-           ->add('id')
-           ->add('name');
+            ->add('id')
+            ->add('name');
     }
 
     public function prePersist($group){

@@ -35,7 +35,8 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-        - 'FormType/extending_table.html.twig'
+        - 'DBBundle:form:mark_table.html.twig'
+        - 'DBBundle:form:schedule_table.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -78,10 +79,20 @@ sonata_block:
             contexts:   [admin]
         sonata.block.service.text:
         sonata.block.service.rss:
+
+#sonata_translation:
+    #locales: [en, ru]
+    #default_locale: ru
+    #gedmo:
+        #enabled: true
+    #knplabs:
+        #enabled: true
+    #phpcr:
+        #enabled: true
             
 sonata_admin:
     title: AdminDB
-    title_logo: bundles/app/images/logo2.png
+    title_logo: bundles/app/images/logo_green_cloud.png
     security:
         #handler: sonata.admin.security.handler.role
     dashboard:
@@ -108,12 +119,12 @@ sonata_admin:
                 settings:
                     groups: [admin.group.db]
         groups:
-            admin.group.main:
-                label:  Main
-                label_catalogue: AppBundle
-                items:
-                    - app.admin.blogpost
-                    - app.admin.category
+            #admin.group.main:
+                #label:  Main
+                #label_catalogue: AppBundle
+               # items:
+                    #- app.admin.blogpost
+                    #- app.admin.category
             admin.group.db:
                 label: Lists
                 label_catalogue: DBBundle
@@ -122,7 +133,7 @@ sonata_admin:
                     - db.admin.student
                     - db.admin.teacher
                     - db.admin.subject
-                    - db.admin.mark
+                    #- db.admin.mark
             #admin.group.knp.lists:
                 #label: Lists
                 #label_catalogue: ~
@@ -143,3 +154,9 @@ sonata_admin:
                     #- sonata.demo.admin.car
     templates:
         layout: custom_standard_layout.html.twig
+
+sonata_doctrine_orm_admin:
+        templates:
+            types:
+                list:
+                    marktable: DBBundle:mark_table.html.twig

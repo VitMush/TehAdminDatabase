@@ -93,10 +93,10 @@ class Mark
     /**
      * Set mark
      *
-     * @param \tinyint $mark
+     * @param $mark
      * @return Mark
      */
-    public function setMark(\tinyint $mark)
+    public function setMark($mark)
     {
         $this->mark = $mark;
 

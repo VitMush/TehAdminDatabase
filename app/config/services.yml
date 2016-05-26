@@ -7,3 +7,8 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+   # admindb.form.type.mark_table:
+   #     class: DBBundle\Form\Type\MarkTableType
+    #    argumetns: [type: service, id: property_accessor]
+    #    tags:
+   #         - {name: form.type, aliss: mark_table}

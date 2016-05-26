@@ -194,7 +194,7 @@ class Student
      * @param string $bk
      * @return Student
      */
-    public function setBk($bk)
+    public function setBK($bk)
     {
         $this->bk = $bk;
 
@@ -206,7 +206,7 @@ class Student
      *
      * @return string 
      */
-    public function getBk()
+    public function getBK()
     {
         return $this->bk;
     }
@@ -468,6 +468,7 @@ class Student
      * @return $this
      */
     public function setMarks($marks){
+        //$this->marks = $marks;
         foreach($marks as $mark){
             $this->addMark($mark);
         }
@@ -480,6 +481,12 @@ class Student
      * @return $this
      */
     public function addMark(Mark $mark){
+        foreach($this->marks as $i){
+            if($i->getId() == $mark->getId()){
+                $i->setMark($mark->getMark());
+                return $this;
+            }
+        }
         $mark->setStudent($this);
         $this->marks->add($mark);
 

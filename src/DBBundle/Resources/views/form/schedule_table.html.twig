@@ -1,0 +1,114 @@
+{% block schedule_table_widget %}
+    <div style="width: 62%;" class="box box-success">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="sonata-ba-list-field-header">
+                        <th style="font-size: large" width="2">Day</th>
+                        <th style="font-size: large" width="80">Alarms</th>
+                        <th style="font-size: large" width="10">Lesson</th>
+                        <th style="font-size: large; width: 1px">Subject</th>
+                        <th style="font-size: large" width="1px">Room</th>
+                        <th style="font-size: large" >Teacher</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% set days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+                    {% set alarm_hours = [ ['8', '9'], ['10', '11'], ['12', '13'], ['13', '14'] ]  %}
+                    {% set alarm_minutes = [ ['30', '50'], ['00', '20'], ['00', '20'], ['30', '50'] ] %}
+                    {% set alarm_hours_friday = [ ['8', '9'], ['10', '11'], ['11', '13'], ['13', '14'] ] %}
+                    {% set alarm_minutes_friday = [ ['30', '50'], ['00', '20'], ['40', '00'], ['10', '30'] ] %}
+                    {% set lessons = ['I', 'II', 'III', 'IV'] %}
+                    {% set rowHeight = '32px' %}
+
+                    <datalist id="SubjectChoice">
+                        <option value=""></option>
+                        {% for subject in value['subjects'] %}
+                            <option value="{{ subject }}"></option>
+                        {% endfor %}
+                    </datalist>
+
+                    {% set friday = false %}
+                    {% for d, day in days %}
+                        {% if day == 'Friday' %}
+                            {% set friday = true %}
+                        {% endif %}
+                        <tr>
+
+
+                            {#<td><style type='text/css' style="transform: rotate(-90deg); transform-origin: left bottom 0; float: left;">{{ day }}</style></td>#}
+                            <td><h4>{{ day }}</h4></td>
+
+                            <td>
+                                {% if friday %}
+                                    {% set alarm_hours = alarm_hours_friday %}
+                                    {% set alarm_minutes = alarm_minutes_friday %}
+                                {% endif %}
+                                <table>
+                                    {% for i, hour in alarm_hours %}
+                                        <tr><td height={{ rowHeight }}>{{ hour[0] }}<sup>{{ alarm_minutes[i][0] }}</sup> : {{ hour[1] }}<sup>{{ alarm_minutes[i][1] }}</sup></td></tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+
+                            <td><table>
+                                {% for lesson in lessons %}
+                                    <tr><td height={{ rowHeight }}><b>{{ lesson }}</b></td></tr>
+                                {% endfor %}
+                            </table></td>
+
+                            <td><table>
+                                {% for i in [0,1,2,3] %}
+                                    <tr><td>
+                                        {% set hasValue = false %}
+                                        {% if (value.subject_choice is not empty) and (value.subject_choice[d] is defined) and (value.subject_choice[d][i] is defined)%}
+                                            {% set hasValue = true %}
+                                            {% set input_value = value.subject_choice[d][i] %}
+                                        {% endif %}
+                                        {% set input_id = id~'_subject_choice_'~d~'_'~i %}
+                                        {% set input_name = full_name~'[subject_choice]['~d~']['~i~']' %}
+                                        {#<select style="width: 10em; height:{{ rowHeight }};" form="{{ input_id }}" name="{{ input_name }}" {% if value['subjects'] is empty %} disabled="true" {% endif %} >
+                                            {% if not hasValue %}<option selected="true"> </option> {% endif %}
+                                            {% for subjectId, subject in value['subjects'] %}
+                                                <option value="{{ subjectId }}">{{ subject }}</option>
+                                            {% endfor %}
+                                        </select>#}
+                                            <input style="width: 10em; height: {{ rowHeight }};" id="{{ input_id }}" name="{{ input_name }}" type="text" list="SubjectChoice" class="form-control" {% if hasValue %}value="{{ input_value }}" {% endif %} {% if value['subjects'] is empty %} disabled="true" {% endif %} />
+                                    </td></tr>
+                                {% endfor %}
+                            </table></td>
+
+                            <td><table>
+                                {% for i in [0,1,2,3] %}
+                                    <tr><td>
+                                        {% set hasValue = false %}
+                                        {% if (value['rooms'] is defined) and (value.rooms[d] is defined) and (value.rooms[d][i] is defined)%}
+                                            {% set hasValue = true %}
+                                            {% set input_value = value.rooms[d][i] %}
+                                        {% endif %}
+                                        {% set input_id = id~'_rooms_'~d~'_'~i %}
+                                        {% set input_name = full_name~'[rooms]['~d~']['~i~']' %}
+                                        <input style="width: 4em;height: {{ rowHeight }};" id="{{ input_id }}" name="{{ input_name }}" class="form-control" type="text" {% if hasValue %}value="{{ input_value }}{% endif %}"/>
+                                    </td></tr>
+                                {% endfor %}
+                            </table></td>
+
+                            <td><table>
+                                {% for i, subject in value.subject_choice[d] %}
+                                    <tr><td height={{ rowHeight }}>
+                                    {% if subject is not empty %}
+                                        {% set id = value.subject_id[subject] %}
+                                        {{ value['teachers'][id] }}
+                                    {% endif %}
+                                    </td></tr>
+                                {% endfor %}
+                            </table></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
