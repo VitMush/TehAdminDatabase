@@ -1,0 +1,120 @@
+{#{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+#}
+
+{% block marks_table_widget %}
+    {% set debug=false %}
+
+    {% if debug %}
+
+    {% endif %}
+
+    {% if (debug) or (value is empty) or (value['subjects'] is empty) or (value['students'] is empty) %}
+        <h3>{{ "Table doesn't exists!" }}</h3>
+    {% else %}  
+        <div class="box box-success">
+         <div class="box-body table-responsive no-padding">
+          <table class="table table-bordered table-striped" style="overflow: auto !important overflow-wrap: normal">
+            <thaad><tr class="sonata-ba-list-field-header">
+                <th style="font-size: large; width: 6em; background-color: white" >{{ 'group.marks.studentName' | trans }}</th>
+                <th style="font-size: large; width: 3em; background-color: white" >{{ 'group.marks.bk' | trans }}</th>
+                {% for subject in value['subjects']%}
+                    <th style="width: 5em; background-color: white"> {{ subject }} </th>
+                {% endfor %}
+                <th style="font-size: large; width: 1em; background-color: white" >{{ 'group.marks.average' | trans }}</th>
+                <th style="font-size: large; background-color: white" >{{ 'group.marks.notation' | trans }}</th>
+            </tr><thead />
+            <tbody>
+
+            {# <datalist id="markChoice">
+                {% for grade in [1, 2, 3, 4, 5] %}
+                    <option>{{ grade }}</option>
+                {% endfor %}
+            </datalist>
+            #}
+            
+            {% for studentId, student in value['students'] %}
+                <tr>
+                    <td> {{ student }} </td>
+                    {% set bk='student.'~value['bk'][studentId] %}
+                    <td><b>{{ bk | trans }}</b></td>
+                    {% for subjectId, subject in value['subjects'] %}
+                        <td>
+                            {% set id_namePostfix = ['marks', studentId, subjectId] %}
+                            {% set showValue=false %}
+                            {% if (value.marks is not empty) and (value.marks[studentId] is defined) and (value.marks[studentId][subjectId] is defined) %}
+                                {% set showValue=true %}
+                            {% endif %}
+                            {# <input style="width: 4em" style="font-size: large;" class="form-control" size="12" list="markChoice" {{ block('id_name') }} type="text" {% if showValue %}value="{{ value['marks'][studentId][subjectId] }}" {% endif %} />#}
+                            <select style="width: 4em" style="font-size: large;" class="form-control" size="12" {{ block('id_name') }} onChange="countStudentAverage({{ studentId }})">
+                                <option value="" selected> </option>
+                                {% for grade in ['1', '2', '3', '4', '5'] %}
+                                    {% set selected= (showValue) and (value.marks[studentId][subjectId] == grade) %}
+                                    <option {% if selected %}selected{% endif %}>{{ grade }}</option>
+                                {% endfor %}   
+                            </select>
+                        </td>
+                    {% endfor %}
+                    <td style="align-content: center !important;">
+                        <h4 id="average_{{studentId}}" style="text-align: center; font-weight: 600;"></h4>
+                    </td>
+                    <td><b> {{ value['notation'][studentId] }} </b></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table></div></div>
+            
+        {{ block('script_average') }}
+    {% endif %}
+{% endblock %}
+
+{% block id_name %}
+    {% set name_keys = '' %}
+    {% set id_keys = '' %}
+    {% for key in id_namePostfix %}
+        {% set name_keys = name_keys~'['~key~']' %}
+    {% endfor %}
+    {% for key in id_namePostfix %}
+        {% set id_keys = id_keys~'_'~key %}
+    {% endfor %}
+    id="{{ id }}{{ id_keys }}" name="{{ full_name }}{{ name_keys }}"
+{% endblock %}  
+
+{% block script_average %}
+    <script>
+        var subjects = [];
+        {% for subjectId, subj in value.subjects %}
+            subjects.push( {{ subjectId }} );
+        {% endfor %}    
+        
+        {% for studentId, stud in value.students %}
+            countStudentAverage({{studentId}});
+        {% endfor %}    
+            
+        function countStudentAverage(studentId){
+            var average = 0; var averageCount = 0;
+            for(var i = 0; i < subjects.length; i++){
+                var subjectId = subjects[i];
+                mark = document.getElementById('{{ id }}'+'_marks_'+studentId+'_'+subjectId).value;
+                if(isNaN(mark) || !mark)
+                    continue;
+                else { averageCount++; average += parseInt(mark); }
+            }
+            if(average != 0)
+                document.getElementById('average_'+studentId).innerHTML = (average/averageCount).toFixed(2);
+        }
+    </script>   
+{% endblock %}
+    
+{# SonataAdminBundle:CRUD/edit_text.html.twig #}
+{# {% block body %}
+    {% for student in students %}
+        {%  include('SonataAdminBundle:CRUD/edit_text.html.twig', {'field_element' : student %}
+    {% endfor %}
+{% endblock %}
+
+
+{% block field %}
+    {{ value|raw }}
+{% endblock %}
+
+#}

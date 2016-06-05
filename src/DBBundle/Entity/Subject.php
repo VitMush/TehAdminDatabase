@@ -92,6 +92,10 @@ class Subject
     {
         return $this->name;
     }
+    
+    public function getNameWithTeacherName(){
+        return $this->name . ' (' . $this->teacher . ')';
+    }
 
     /**
      * Set teacher
@@ -138,7 +142,7 @@ class Subject
     }
 
     public function __toString(){
-        return $this->name . ' (' . $this->teacher . ')';
+        return $this->getName();
         //return empty($title) ? 'hell' : $title;
     }
 }

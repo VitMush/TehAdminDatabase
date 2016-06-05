@@ -1,20 +1,26 @@
 {% block schedule_table_widget %}
-    <div style="width: 62%;" class="box box-success">
+    <div style="width: 75%;" class="box box-success">
         <div class="box-body table-responsive no-padding">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr class="sonata-ba-list-field-header">
-                        <th style="font-size: large" width="2">Day</th>
-                        <th style="font-size: large" width="80">Alarms</th>
-                        <th style="font-size: large" width="10">Lesson</th>
-                        <th style="font-size: large; width: 1px">Subject</th>
-                        <th style="font-size: large" width="1px">Room</th>
-                        <th style="font-size: large" >Teacher</th>
+                        <th style="font-size: large" width="2">{{ 'group.schedule.day' | trans }}</th>
+                        <th style="font-size: large" width="80">{{ 'group.schedule.alarms' | trans }}</th>
+                        <th style="font-size: large" width="10">{{ 'group.schedule.lesson' | trans }}</th>
+                        <th style="font-size: large; width: 1px">{{ 'group.schedule.subject' | trans }}</th>
+                        <th style="font-size: large" width="1px">{{ 'group.schedule.room' | trans }}</th>
+                        <th style="font-size: large" >{{ 'group.schedule.teacher' | trans }}</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {% set days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+                    {% set days = [
+                            'group.schedule.days.monday' | trans, 
+                            'group.schedule.days.tuesday' | trans, 
+                            'group.schedule.days.wednesday' | trans, 
+                            'group.schedule.days.thursday' | trans, 
+                            'group.schedule.days.friday' | trans
+                    ] %}
                     {% set alarm_hours = [ ['8', '9'], ['10', '11'], ['12', '13'], ['13', '14'] ]  %}
                     {% set alarm_minutes = [ ['30', '50'], ['00', '20'], ['00', '20'], ['30', '50'] ] %}
                     {% set alarm_hours_friday = [ ['8', '9'], ['10', '11'], ['11', '13'], ['13', '14'] ] %}
@@ -95,7 +101,11 @@
                             </table></td>
 
                             <td><table>
-                                {% for i, subject in value.subject_choice[d] %}
+                                {% set subject_choice_rows=[[], [], [], []] %}    
+                                {% if value.subject_choice[d] is defined %}
+                                    {% set subject_choice_rows = value.subject_choice[d] %}
+                                {% endif %}    
+                                {% for i, subject in subject_choice_rows %}
                                     <tr><td height={{ rowHeight }}>
                                     {% if subject is not empty %}
                                         {% set id = value.subject_id[subject] %}

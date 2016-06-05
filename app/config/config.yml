@@ -38,7 +38,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-        - 'DBBundle:form:mark_table.html.twig'
+        - 'DBBundle:form:marks_table.html.twig'
         - 'DBBundle:form:schedule_table.html.twig'
 
 # Doctrine Configuration

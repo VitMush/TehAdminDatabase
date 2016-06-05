@@ -20,7 +20,7 @@ class Group
         $this->subjects = new ArrayCollection();
         $this->marksTable = array('marks' => array());
         $this->scheduleTable = array('subject_choice' => array(), 'rooms' => array());
-        $this->subjectsChanged = false;
+        $this->subjectsChanged = true;
     }
 
     /**
@@ -68,6 +68,10 @@ class Group
      */
     private $scheduleTable;
 
+    /**
+     *
+     * @ORM\Column(type="boolean")
+     */
     private $subjectsChanged;
 
 
@@ -223,6 +227,7 @@ class Group
 
     public function setMarksTable(array $value)
     {
+        //throw new Exception();
         if($value == null || $value['marks'] == null){
             return;
         }
@@ -260,7 +265,7 @@ class Group
         $students = array(); $bk = array(); $notation = array();
         foreach($studentsObj as $student){
             $studentId = $student->getId();
-            $students[$studentId] = $student->getName();
+            $students[$studentId] = $student->getNameWithInitials();
             $bk[$studentId] = $student->getBK();
             $notation[$studentId] = $student->getNotation();
         }
@@ -301,7 +306,9 @@ class Group
 
     public function setScheduleTable($table)
     {
-        //throw new Exception('###_'.$table['rooms']['0']['1'].'_!!!');
+        if(empty($table)){
+            return;
+        }
         $this->scheduleTable['subject_choice'] = $table['subject_choice'];
         $this->scheduleTable['rooms'] = $table['rooms'];
     }
@@ -319,7 +326,7 @@ class Group
             
             $table['teachers'][$subject->getId()] = $subject->getTeacher()->getName();
         }
-        if(!$this->subjectsChanged) {
+        if($this->subjectsChanged) {
             foreach($table['subject_choice'] as $i => $row){
                 foreach($row as $m => $name){
                     if(!in_array($name, $table['subjects'])){
@@ -327,6 +334,7 @@ class Group
                     }
                 }
             }
+            $this->subjectsChanged = false;
         }
 
         return $table;

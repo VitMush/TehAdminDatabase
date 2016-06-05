@@ -2,7 +2,7 @@
 
 namespace DBBundle\Admin;
 
-use DBBundle\Form\Type\MarkTableType;
+use DBBundle\Form\Type\MarksTableType;
 use DBBundle\Form\Type\ScheduleType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\Admin;
@@ -48,7 +48,7 @@ class GroupAdmin extends Admin
             $formMapper
                 ->tab($t->trans('group.marksT'))
                     ->with($t->trans('group.marksT'))
-                        ->add('marksTable', MarkTableType::class, array('label' => $t->trans('group.marks.marksTable'), 'required' => false))
+                        ->add('marksTable', MarksTableType::class, array('label' => $t->trans('group.marks.marksTable'), 'required' => false))
                 ->end()->end();
         }
         $formMapper
@@ -61,6 +61,7 @@ class GroupAdmin extends Admin
                         ->add('subjects', 'sonata_type_model', array(
                             'label' => $t->trans('group.subjects'),
                             'class' => 'DBBundle\Entity\Subject',
+                            'property' => 'nameWithTeacherName',
                             'by_reference' => false,
                             'required' => false,
                             'multiple' => true
@@ -70,7 +71,7 @@ class GroupAdmin extends Admin
                         ->add('students', 'sonata_type_model', array(
                             'label' => $t->trans('group.students'),
                             'class' => 'DBBundle\Entity\Student',
-                            'property' => 'name',
+                            'property' => 'nameWithInitials',
                             'by_reference' => false,
                             'required' => false,
                             'multiple' => true

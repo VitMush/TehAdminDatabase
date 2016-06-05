@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Form;
 
-class MarkTableType extends AbstractType
+class MarksTableType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -61,6 +61,6 @@ class MarkTableType extends AbstractType
     }
 
     public function getBlockPrefix(){
-        return 'mark_table';
+        return 'marks_table';
     }
 }

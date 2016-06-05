@@ -4,10 +4,25 @@
     <div id="wrapper">
         <div id="container">
             <div id="welcome">
-                <h1><span>Welcome to</span> Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}</h1>
+                <h1>{{ 'index.welcome' | trans }} </h1>
             </div>
-
+            
             <div id="status">
+                <p><h2>Да, это страница сервера 
+                    <p id="tehName">"Приднепровского Энергостроительного техникума"</p>
+                </h2></p>
+                <p>Если не знаешь, что делать дальше, то вот, прочитай несколько интересных фактов про дельфинов:</p>
+                <ul>
+                    <li>В речи дельфинов ученые уже насчитали 186 разных «свистов». У них примерно столько же уровней организации звуков, сколько и у человека: шесть, то есть звук, слог, слово, фраза, абзац, контекст, есть свои диалекты</li>
+                    <li>Афалина может определить местоположение мячика размером с мандарин с расстояния 113 м.</li>
+                    <li>У дельфина в два раза больше извилин в коре головного мозга, чем у человека</li>
+                    <li>Дельфины не способны дышать рефлекторно, как это делают люди, и умирают, если поместить их под общий наркоз.</li>
+                </ul>
+                <p id="click_row">Прочитать {{ block('magicClick') }} полностью. </p>
+                <img id='dolphins' style='width: 15em; position: absolute; left: 40%; top: 68%; display: none;' src='{{ asset('images/dolphins.jpg') }}'>
+            </div>  
+            
+            <!--<div id="status">
                 <p>
                     <svg id="icon-status" width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z" fill="#759E1A"/></svg>
 
@@ -40,18 +55,75 @@
                         How to create your first page in Symfony
                     </a>
                 </p>
-            </div>
+            </div>-->
 
         </div>
-    </div>
+{% endblock %}
+
+{% block magicClick %}
+    <span id='click'>
+        <a id="click_a" width='10em' onmousedown="startMagic()" onmouseover="" href="https://ru.wikipedia.org/wiki/%D0%94%D0%B5%D0%BB%D1%8C%D1%84%D0%B8%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5">статью</a>
+    </span>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var mouseOverCount = 0;
+        var click = document.getElementById('click_a');
+        var dolphins = document.getElementById('dolphins');
+        
+        function startMagic(){
+            click.style.top = '2em';
+            click.setAttribute('onmouseover', 'makeMagic()');
+        }
+        
+        function makeMagic(){
+            mouseOverCount++;
+            var i = mouseOverCount;
+            if(i == 1)
+                click.style.left = '30em'; //71%
+            else if(i == 2)
+                click.style.left = '-4em'; //-12%
+            else if(i == 3){
+                click.style.left = '3em';
+                click.style.top = '-15em';
+            }
+            else if(i == 4){
+                click.style.top = '2em';
+                click.style.left = '13em';
+                click.innerHTML = 'Статья';
+                click.setAttribute('onmouseover', '');
+                click.setAttribute('onmousedown', 'makeMagic()');
+            }
+            else if(i == 5){
+                dolphins.style.display = 'inline';   
+                setTimeout('dolphins.style.display = "none"', 400);
+                
+                click.style.left = '17em';
+                click.innerHTML = 'почти';
+                click.setAttribute('onmouseover', 'makeMagic()');
+            }
+            else if(i == 6){
+                click.style.left = '8em';
+                click.innerHTML = 'еще раз';
+            }
+            else if(i == 7){
+                click.style.left = '13em';
+                click.innerHTML = 'click';
+                click.setAttribute('onmouseover', '');
+                click.setAttribute('onmousedown', '');
+            }
+        }
+    </script>
 {% endblock %}
 
 {% block stylesheets %}
 <style>
     body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
     h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
-    h1 { font-size: 36px; }
-    h2 { font-size: 21px; margin-bottom: 1em; }
+    h1 { font-size: 36px; margin-bottom: -0.8em; }
+    h2 { font-size: 21px; margin-bottom: 1.5em; }
+    h2 #tehName { font-style: oblique; font-weight: bolder; text-align: center; padding-top: 0.5em}
     p { margin: 0 0 1em 0; }
     a { color: #0000F0; }
     a:hover { text-decoration: none; }
@@ -62,11 +134,12 @@
     #welcome h1 span { display: block; font-size: 75%; }
     #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
     #icon-book { display: none; }
+    #click a { position: relative; display: inline-block; width: 6ex; white-space: nowrap }
 
     @media (min-width: 768px) {
         #wrapper { width: 80%; margin: 2em auto; }
         #icon-book { display: inline-block; }
-        #status a, #next a { display: block; }
+        #next a { display: block;}
 
         @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
         @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }

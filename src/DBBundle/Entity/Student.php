@@ -40,7 +40,7 @@ class Student
     /**
      * @var string
      *
-     * @ORM\Column(name="number", type="string", length=20)
+     * @ORM\Column(name="number", type="string", length=20, nullable=true)
      */
     private $number;
 
@@ -54,21 +54,21 @@ class Student
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birth", type="date")
+     * @ORM\Column(name="birth", type="date", nullable=true)
      */
     private $birth;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="person_certificate", type="string", length=20)
+     * @ORM\Column(name="person_certificate", type="string", length=20, nullable=true)
      */
     private $personCertificate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="inn", type="string", length=20)
+     * @ORM\Column(name="inn", type="string", length=20, nullable=true)
      */
     private $inn;
 
@@ -82,35 +82,35 @@ class Student
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=50)
+     * @ORM\Column(name="status", type="string", length=50, nullable=true)
      */
     private $status;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=150)
+     * @ORM\Column(name="address", type="string", length=150, nullable=true)
      */
     private $address;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="parents", type="string", length=150)
+     * @ORM\Column(name="parents", type="string", length=150, nullable=true)
      */
     private $parents;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="notation", type="string", length=100)
+     * @ORM\Column(name="notation", type="string", length=100, nullable=true)
      */
     private $notation;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="recordbook", type="string", length=30)
+     * @ORM\Column(name="recordbook", type="string", length=30, nullable=true)
      */
     private $recordbook;
 
@@ -163,6 +163,15 @@ class Student
     public function getName()
     {
         return $this->name;
+    }
+    
+    public function getNameWithInitials(){
+        $nameWords = explode(' ', $this->getName());
+        $initials = '';
+        for($i = 1; $i < count($nameWords); $i++){
+            $initials .= ' '.mb_substr($nameWords[$i], 0, 1).'.';
+        }
+        return $nameWords[0].$initials;
     }
 
     /**

@@ -12,16 +12,21 @@ class StudentAdmin extends Admin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
+		$fastCreateRequest = false;
+        if(strpos($this->getRequest()->getUri(), 'create?code')){
+            $fastCreateRequest = true;
+        }
+		
         $t = $this->getTranslator();
         $formMapper
-                ->with($t->trans('student.mainInfo'), array('class' => 'col-md-4'))
+                ->with($t->trans('student.mainInfo'), array('class' => 'col-md-3'))
                     ->add('name', 'text', array('label' => $t->trans('student.name')))
                     ->add('bk', 'choice', array(
                         'label' => $t->trans('student.bk'),
                         'expanded' => true,
                         'choices' => array(
                             'b' => $t->trans('student.b'),
-                            'k' => $t->trans('student.b')
+                            'k' => $t->trans('student.k')
                         )
                     ))
                     ->add('gender', 'choice', array(
@@ -33,29 +38,47 @@ class StudentAdmin extends Admin
                         )
                     ->add('birth', 'date', array(
                         'label' => $t->trans('student.birth'),
-                        'years' => range(1990, date('Y'))))
-                    ->add('status', 'text', array('label' => $t->trans('student.status')))
-                    ->add('group', 'sonata_type_model', array(
+                        'years' => range(1990, date('Y'))));
+				if(!$fastCreateRequest){
+					$formMapper->add('group', 'sonata_type_model', array(
                         'label' => $t->trans('student.group'),
                         'class' => 'DBBundle\Entity\Group',
-                        'required' => false))
+                        'required' => false));
+				}
+                $formMapper->end()
+				
+				->with($t->trans('student.personalInfo'), array('class' => 'col-md-5'))
+					->add('status', 'text', array(
+						'label' => $t->trans('student.status'), 
+						'required' => false))
+                    ->add('personCertificate', 'text', array(
+						'label' => $t->trans('student.personal'), 
+						'required' => false))
+                    ->add('inn', 'text', array(
+						'label' => $t->trans('student.inn'),
+						'required' => false))
+                    ->add('recordBook', 'text', array(
+						'label' => $t->trans('student.record'), 
+						'required' => false))
                 ->end()
 
                 ->with($t->trans('student.contactInfo'), array('class' => 'col-md-4'))
-                    ->add('address', 'text', array('label' => $t->trans('student.address')))
-                    ->add("number", 'text', array('label' => $t->trans('student.number')))
-                    ->add('parents', 'textarea', array('label' => $t->trans('student.parents')))
+                    ->add('address', 'text', array(
+						'label' => $t->trans('student.address'), 
+						'required' => false))
+                    ->add("number", 'text', array(
+						'label' => $t->trans('student.number'),
+						'required' => false))
+                    ->add('parents', 'textarea', array(
+						'label' => $t->trans('student.parents'),
+						'required' => false))
                 ->end()
 
-            ->with($t->trans('student.adableInfo'), array('class' => 'col-md-4'))
-            ->add('notation', 'textarea', array('label' => $t->trans('student.notation')))
-            ->end()
-
-                ->with($t->trans('student.personalInfo'), array('class' => 'col-md-5'))
-                    ->add('personCertificate', 'text', array('label' => $t->trans('student.personal')))
-                    ->add('inn', 'text', array('label' => $t->trans('student.inn')))
-                    ->add('recordBook', 'text', array('label' => $t->trans('student.record')))
-                ->end();
+				->with($t->trans('student.adableInfo'), array('class' => 'col-md-5'))
+					->add('notation', 'textarea', array(
+					'label' => $t->trans('student.notation'),
+					'required' => false))
+				->end();
 
         $subject = $this->getSubject();
         $creation = $subject && $subject->getId() ? false : true;

@@ -1,3 +1,5 @@
+index:
+    welcome: Добро пожаловать!
 dashboard:
   group: Группы
   student: Студенты
@@ -18,7 +20,7 @@ group:
     marks:
         marksTable: Таблица оценок
         studentName: Имя студента
-        bk: Б/R
+        bk: Б/К
         average: Средний бал
         notation: Примечание
     schedule:
@@ -29,6 +31,12 @@ group:
         subject: Предмет
         room: Аудитория
         teacher: Преподаватель
+        days:
+            monday: Понедельник
+            tuesday: Вторник
+            wednesday: Среда
+            thursday: Четверг
+            friday: Пятница
 teacher:
     teacher: Преподаватель
     name: ФИО
