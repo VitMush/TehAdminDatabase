@@ -275,7 +275,6 @@ class Group
             'subjects' => $subjects,
             'marks' => array(),
             'bk' => $bk,
-            'average' => array(),
             'notation' => $notation
         );
 
@@ -285,22 +284,15 @@ class Group
 
         foreach($students as $studentId => $student) {
             if (key_exists($studentId, $this->marksTable['marks'])) {
-                $average = 0;
                 foreach ($subjects as $subjectId => $subject) {
                     if (key_exists($subjectId, $this->marksTable['marks'][$studentId])) {
                         $mark = $this->marksTable['marks'][$studentId][$subjectId];
                         $table['marks'][$studentId][$subjectId] = $mark;
-                        if(is_numeric($mark)) {
-                            $average += intval($mark);
-                        }
                     }
                 }
-                if($average != 0)
-                    $table['average'][$studentId] = strval($average);
             }
         }
 
-        //throw new Exception(strval($table['average'][7]));
         return $table;
     }
 
