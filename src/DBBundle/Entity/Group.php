@@ -318,7 +318,7 @@ class Group
             
             $table['teachers'][$subject->getId()] = $subject->getTeacher()->getName();
         }
-        if($this->subjectsChanged) {
+        if($this->subjectsChanged && array_key_exists('subject_choice', $table) && !empty($table['subject_choice'])) {
             foreach($table['subject_choice'] as $i => $row){
                 foreach($row as $m => $name){
                     if(!in_array($name, $table['subjects'])){

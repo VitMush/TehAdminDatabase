@@ -157,6 +157,7 @@ sonata_admin:
                     #- sonata.demo.admin.car
     templates:
         layout: custom_standard_layout.html.twig
+        edit: DBBundle:CRUD:edit.html.twig
 
 sonata_doctrine_orm_admin:
         templates:

@@ -19,9 +19,10 @@
                     <li>Дельфины не способны дышать рефлекторно, как это делают люди, и умирают, если поместить их под общий наркоз.</li>
                 </ul>
                 <p id="click_row">Прочитать {{ block('magicClick') }} полностью. </p>
-                <img id='dolphins' style='width: 15em; position: absolute; left: 40%; top: 68%; display: none;' src='{{ asset('images/dolphins.jpg') }}'>
+                <img id='dolphins' style='width: 15em; position: absolute; left: 40%; top: 25em; display: none;'  src='{{ asset('images/dolphins.jpg') }}'>
             </div>  
         </div>
+    </div>
 {% endblock %}
 
 {% block magicClick %}
@@ -60,8 +61,8 @@
                 click.setAttribute('onmousedown', 'makeMagic()');
             }
             else if(i == 5){
-                dolphins.style.display = 'inline';   
-                setTimeout('dolphins.style.display = "none"', 400);
+                dolphins.style.display = 'inline';
+                setTimeout('dolphins.style.display = "none"', 600);
                 
                 click.style.left = '17em';
                 click.innerHTML = 'почти';

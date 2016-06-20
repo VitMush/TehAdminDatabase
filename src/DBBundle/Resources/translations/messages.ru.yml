@@ -19,6 +19,7 @@ group:
         studentsList: Список студентов
     marks:
         marksTable: Таблица оценок
+        tableNotExists: Таблица не существует. Добавьте предметы и студентов во вкладке "Редактирование".
         studentName: Имя студента
         bk: Б/К
         average: Средний бал

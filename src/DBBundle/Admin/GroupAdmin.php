@@ -49,6 +49,10 @@ class GroupAdmin extends Admin
                 ->tab($t->trans('group.marksT'))
                     ->with($t->trans('group.marksT'))
                         ->add('marksTable', MarksTableType::class, array('label' => $t->trans('group.marks.marksTable'), 'required' => false))
+                ->end()->end()
+                ->tab($t->trans('group.scheduleT'))
+                ->with($t->trans('group.schedule.scheduleTable'))
+                ->add('scheduleTable', ScheduleType::class, array('label' => $t->trans('group.schedule.scheduleTable')))
                 ->end()->end();
         }
         $formMapper
@@ -77,14 +81,6 @@ class GroupAdmin extends Admin
                             'multiple' => true
                         ))
                     ->end()->end();
-        if(!$creation){
-            $formMapper
-                ->tab($t->trans('group.scheduleT'))
-                    ->with($t->trans('group.schedule.scheduleTable'))
-                        ->add('scheduleTable', ScheduleType::class, array('label' => $t->trans('group.schedule.scheduleTable')))
-                ->end()->end();
-        }
-
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

@@ -9,7 +9,7 @@
     {% endif %}
 
     {% if (debug) or (value is empty) or (value['subjects'] is empty) or (value['students'] is empty) %}
-        <h3>{{ "Table doesn't exists!" }}</h3>
+        <h3>{{ 'group.marks.tableNotExists' | trans }}</h3>
     {% else %}  
         <div class="box box-success">
          <div class="box-body table-responsive no-padding">
