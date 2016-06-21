@@ -13,7 +13,7 @@
     {% else %}  
         <div class="box box-success">
          <div class="box-body table-responsive no-padding">
-          <table class="table table-bordered table-striped" style="overflow: auto !important overflow-wrap: normal">
+          <table class="table table-bordered table-striped" style="display: block; overflow-x: auto;">
             <thaad><tr class="sonata-ba-list-field-header">
                 <th style="font-size: large; width: 6em; background-color: white" >{{ 'group.marks.studentName' | trans }}</th>
                 <th style="font-size: large; width: 3em; background-color: white" >{{ 'group.marks.bk' | trans }}</th>
@@ -45,7 +45,7 @@
                                 {% set showValue=true %}
                             {% endif %}
                             {# <input style="width: 4em" style="font-size: large;" class="form-control" size="12" list="markChoice" {{ block('id_name') }} type="text" {% if showValue %}value="{{ value['marks'][studentId][subjectId] }}" {% endif %} />#}
-                            <select style="width: 4em" style="font-size: large;" class="form-control" size="12" {{ block('id_name') }} onChange="countStudentAverage({{ studentId }})">
+                            <select style="width: 4em; font-size: large;" class="form-control" size="12" {{ block('id_name') }} onChange="countStudentAverage({{ studentId }})">
                                 <option value="" selected> </option>
                                 {% for grade in ['1', '2', '3', '4', '5'] %}
                                     {% set selected= (showValue) and (value.marks[studentId][subjectId] == grade) %}
