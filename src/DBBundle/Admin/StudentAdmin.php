@@ -105,7 +105,7 @@ class StudentAdmin extends Admin
     {
         $t = $this->getTranslator();
         $listMapper
-                ->addIdentifier('name', null, array('label' => $t->trans('student.name')))
+                ->addIdentifier('nameWithInitials', null, array('label' => $t->trans('student.name')))
                 ->add('gender', null, array('label' => $t->trans('student.gender')))
                 ->add('bk', null, array('label' => $t->trans('student.bk')))
                 ->add('birth', null, array('label' => $t->trans('student.birth')))

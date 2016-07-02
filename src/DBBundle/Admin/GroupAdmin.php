@@ -20,9 +20,11 @@ use Symfony\Component\Form\Form;
 
 class GroupAdmin extends Admin
 {
-
-    private $start = 'new';
-    private $end = 'new';
+    /*public function __construct($code, $class, $baseControllerName)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->yourManager = $yourManager;
+    }*/
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -48,11 +50,11 @@ class GroupAdmin extends Admin
             $formMapper
                 ->tab($t->trans('group.marksT'))
                     ->with($t->trans('group.marksT'))
-                        ->add('marksTable', MarksTableType::class, array('label' => $t->trans('group.marks.marksTable'), 'required' => false))
+                        ->add('marksTable', 'DBBundle\Form\Type\MarksTableType', array('label' => $t->trans('group.marks.marksTable'), 'required' => false))
                 ->end()->end()
                 ->tab($t->trans('group.scheduleT'))
                 ->with($t->trans('group.schedule.scheduleTable'))
-                ->add('scheduleTable', ScheduleType::class, array('label' => $t->trans('group.schedule.scheduleTable')))
+                ->add('scheduleTable', 'DBBundle\Form\Type\ScheduleType', array('label' => $t->trans('group.schedule.scheduleTable')))
                 ->end()->end();
         }
         $formMapper

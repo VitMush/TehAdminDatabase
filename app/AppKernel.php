@@ -25,10 +25,11 @@ class AppKernel extends Kernel
             //new Sonata\CacheBundle\SonataCacheBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
-			/*new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
-			new FOS\UserBundle\FOSUserBundle(),
-			new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
-			new Sonata\UserBundle\SonataUserBundle(),*/
+            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
+            new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
+            //new Sonata\UserBundle\SonataUserBundle(),
             //new Sonata\TranslationBundle\SonataTranslationBundle(),
         );
 
